@@ -1,0 +1,4 @@
+*.o
+build/
+tetris
+compile_commands.json
