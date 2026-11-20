@@ -15,5 +15,6 @@ static const Color PIECE_COLORS[PIECE_COUNT] = {
 void render_draw(const Game *game) {
     BeginDrawing();
     ClearBackground(SKYBLUE);
+    DrawText(TextFormat("Score: %d", game->score), 10, 10, 20, YELLOW);
     EndDrawing();
 }
