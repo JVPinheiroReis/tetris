@@ -30,4 +30,8 @@ void game_init(Game *game);
 void game_update(Game *game, float dt);
 void game_add_score(Game *game, ScoreEvent event, int amount);
 
+// instrucoes mostradas no inicio do jogo (uma string por linha)
+#define INSTRUCTIONS_COUNT 8
+extern const char *game_instructions[INSTRUCTIONS_COUNT];
+
 #endif
