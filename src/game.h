@@ -10,6 +10,9 @@
 #include "board.h"
 #include "piece.h"
 
+#define INSTRUCTIONS_COUNT 22
+extern const char *game_instructions[INSTRUCTIONS_COUNT];
+
 typedef enum {
     SCORE_PIECE_LOCKED, // uma peca foi fixada
     SCORE_ROWS_CLEARED, // linhas completadas
@@ -31,7 +34,5 @@ void game_update(Game *game, float dt);
 void game_add_score(Game *game, ScoreEvent event, int amount);
 
 // instrucoes mostradas no inicio do jogo (uma string por linha)
-#define INSTRUCTIONS_COUNT 22
-extern const char *game_instructions[INSTRUCTIONS_COUNT];
 
 #endif

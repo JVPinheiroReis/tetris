@@ -25,6 +25,7 @@ static void render_pieces(const Board *board) {
         for (c = 0; c < COLUMNS; c++) {
             PieceType type = board->cells[r][c];
             if (type == PIECE_NONE) continue;
+
             render_draw_cell(r, c, type);
         }
     }

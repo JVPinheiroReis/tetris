@@ -50,11 +50,13 @@ void game_init(Game *game) {
 
 void game_add_score(Game *game, ScoreEvent event, int amount) {
     switch (event) {
-        case SCORE_PIECE_LOCKED: game->score += POINTS_PIECE_LOCKED; break;
+        case SCORE_PIECE_LOCKED:
+            game->score += amount * POINTS_PIECE_LOCKED;
+            break;
         case SCORE_ROWS_CLEARED:
             game->score += amount * POINTS_LINE_CLEARED;
             break;
-        case SCORE_TIME_TICK: game->score += POINTS_TIME_TICK; break;
+        case SCORE_TIME_TICK: game->score += amount * POINTS_TIME_TICK; break;
     }
 }
 
@@ -65,12 +67,15 @@ void game_update(Game *game, float dt) {
 
     if (game->score_timer >= SCORE_INTERVAL) {
         game->score_timer -= SCORE_INTERVAL;
+
         game_add_score(game, SCORE_TIME_TICK, 1);
     }
 
     if (game->drop_timer >= DROP_INTERVAL) {
         game->drop_timer -= DROP_INTERVAL;
+
         piece_move_down(&game->current);
+
         if (board_collision(&game->board, &game->current)) {
             game->current.y--;
             board_fix_piece(&game->board, &game->current);

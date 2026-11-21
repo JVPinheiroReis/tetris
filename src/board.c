@@ -4,16 +4,18 @@
 #include <string.h>
 
 void board_init(Board *board) {
-    memset(board->cells, 0, sizeof(board->cells));
+    memset(board->cells, PIECE_NONE, sizeof(board->cells));
 }
 
 int board_is_free(const Board *board, int row, int col) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
         return 0;
     }
-    if (board->cells[row][col] == 0) {
+
+    if (board->cells[row][col] == PIECE_NONE) {
         return 1;
     }
+
     else {
         return 0;
     }
@@ -25,7 +27,7 @@ int board_collision(const Board *board, const Piece *p) {
         for (c = 0; c < 4; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
-            if (board_is_free(board, p->y + r, p->x + c) == 0) {
+            if (!board_is_free(board, p->y + r, p->x + c)) {
                 return 1;
             }
         }
@@ -56,19 +58,21 @@ int board_clear_rows(Board *board) {
         int full = 1;
 
         for (c = 0; c < COLUMNS; c++) {
-            if (board->cells[r][c] == 0) {
+            if (board->cells[r][c] == PIECE_NONE) {
                 full = 0;
                 break;
             }
         }
 
         if (full) {
-            for (row = r; row > 0; row--) {
+            for (row = r; row >= 1; row--) {
                 memcpy(board->cells[row],
                        board->cells[row - 1],
                        sizeof(board->cells[row]));
             }
-            memset(board->cells[0], 0, sizeof(board->cells[0]));
+
+            memset(board->cells[0], PIECE_NONE, sizeof(board->cells[0]));
+
             cleared++;
             r++;
         }

@@ -5,7 +5,7 @@
 #include "piece.h"
 
 typedef struct {
-    int cells[ROWS][COLUMNS];
+    PieceType cells[ROWS][COLUMNS];
 } Board;
 
 void board_init(Board *board);
