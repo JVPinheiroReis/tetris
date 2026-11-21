@@ -1,11 +1,14 @@
 #include "game.h"
-#include "piece.h"
 
 void game_init(Game *game) {
     board_init(&game->board);
     game->current = (Piece){0};
     game->score = 0;
     game->timer = 0.0f;
+
+    // game->board.cells[3][3] = 1;
+    // game->board.cells[4][3] = 1;
+    // game->board.cells[4][4] = 1;
 }
 
 void game_update(Game *game, float dt) {
