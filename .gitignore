@@ -1,4 +1,5 @@
 *.o
+.cache
 build/
 tetris
 compile_commands.json
