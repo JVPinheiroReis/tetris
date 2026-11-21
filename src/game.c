@@ -6,8 +6,10 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
 "Alguem um dia falou que um verdadeiro classico nunca morre.",
 "",
 "",
-"E se ninguem falou deveria, porque o Tetris eh um exemplo disso.",
+"E se ninguem falou, deveria, porque o Tetris eh um exemplo disso.",
 "",
+"",
+"Refizemos aquele tradicional dos anos 80, mas quem sabe, ate melhor",
 "",
 "Para jogar eh facil:",
     "Seta esquerda / direita: mover a peca",
@@ -15,7 +17,7 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "Seta para baixo: descer mais rapido",
     "Para ganhar vc completa linhas para ganhar pontos",
     "",
-    "Partiu voltar no tempo eh jogar um classico inesquecivel?",
+    "Partiu voltar no tempo e jogar um classico revolucionario?",
 "Aperte ENTER e bom jogo."
 };
 void game_init(Game *game) {
