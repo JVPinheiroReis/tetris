@@ -6,6 +6,8 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "Alguem um dia falou que um verdadeiro classico nunca morre.",
     "",
     "",
+"Quem falou? Nem ideia.",
+"",
     "E se ninguem falou, deveria, porque o Tetris eh um exemplo disso.",
     "",
     "",
