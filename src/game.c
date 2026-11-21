@@ -50,9 +50,11 @@ void game_init(Game *game) {
 
 void game_add_score(Game *game, ScoreEvent event, int amount) {
     switch (event) {
-        case SCORE_PIECE_LOCKED: game->score += 10; break;
-        case SCORE_ROWS_CLEARED: game->score += amount * 100; break;
-        case SCORE_TIME_TICK: game->score += 1; break;
+        case SCORE_PIECE_LOCKED: game->score += POINTS_PIECE_LOCKED; break;
+        case SCORE_ROWS_CLEARED:
+            game->score += amount * POINTS_LINE_CLEARED;
+            break;
+        case SCORE_TIME_TICK: game->score += POINTS_TIME_TICK; break;
     }
 }
 
