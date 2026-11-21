@@ -1,5 +1,4 @@
 #include "game.h"
-#include "piece.h"
 
 void game_init(Game *game) {
     board_init(&game->board);

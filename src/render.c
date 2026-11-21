@@ -1,4 +1,5 @@
 #include "render.h"
+#include "game.h"
 #include "raylib.h"
 
 static const Color PIECE_COLORS[PIECE_COUNT] = {

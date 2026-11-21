@@ -1,6 +1,5 @@
 #include "config.h"
 #include "game.h"
-#include "piece.h"
 #include "raylib.h"
 #include "render.h"
 
