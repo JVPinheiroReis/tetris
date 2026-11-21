@@ -1,4 +1,6 @@
 #include "game.h"
+#include <stdlib.h>
+#include <time.h>
 
 const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "TETRIS 2.0",
@@ -24,9 +26,20 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "",
     "Aperte ENTER e bom jogo."};
 
+static Piece game_spawn_piece(void) {
+    Piece p = {
+        .type = (PieceType)(1 + rand() % (PIECE_COUNT - 1)),
+        .x = COLUMNS / 2 - 2,
+        .y = 0,
+        .rotation = 0,
+    };
+    return p;
+}
+
 void game_init(Game *game) {
+    srand((unsigned int)time(NULL));
     board_init(&game->board);
-    game->current = (Piece){0};
+    game->current = game_spawn_piece();
     game->score = 0;
     game->elapsed = 0.0f;
     game->drop_timer = 0.0f;
@@ -55,11 +68,17 @@ void game_update(Game *game, float dt) {
     if (game->drop_timer >= DROP_INTERVAL) {
         game->drop_timer -= DROP_INTERVAL;
         piece_move_down(&game->current);
+        if (board_collision(&game->board, &game->current)) {
+            game->current.y--;
+            board_fix_piece(&game->board, &game->current);
+            game_add_score(game, SCORE_PIECE_LOCKED, 1);
 
-        //  quando uma peça for fixada no tabuleiro:
-        // game_add_score(game, SCORE_PIECE_LOCKED, 1);
+            int cleared = board_clear_lines(&game->board);
+            if (cleared > 0) {
+                game_add_score(game, SCORE_LINES_CLEARED, cleared);
+            }
 
-        //  quando linhas forem completadas:
-        // game_add_score(game, SCORE_LINES_CLEARED, numero_de_linhas);
+            game->current = game_spawn_piece();
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 const Position PIECE_SHAPES[PIECE_COUNT][4][4] =
     {
-        [PIECE_NONE] = {{0}},
+        [PIECE_NONE] = {{{0}}},
         [PIECE_I] =
             {
                 {{1, 0}, {1, 1}, {1, 2}, {1, 3}},
@@ -54,8 +54,6 @@ const Position PIECE_SHAPES[PIECE_COUNT][4][4] =
             },
 };
 
-/*Cada indice representa um estado de rotação da peça, fazendo não se tornar
-necessário calculos para rotacionar uma peça, apenas mudar o seu indice*/
 void piece_move_down(Piece *p) {
     p->y++;
 }
@@ -68,14 +66,14 @@ void piece_move_right(Piece *p) {
     p->x++;
 }
 
-void rotate(Piece *p) {
+void piece_rotate(Piece *p) {
     p->rotation++;
     if (p->rotation == 4) {
         p->rotation = 0;
     }
 }
 
-void undo_rotate(Piece *p) {
+void piece_undo_rotate(Piece *p) {
     p->rotation--;
     if (p->rotation < 0) {
         p->rotation = 3;
