@@ -21,6 +21,7 @@ static void render_pieces(const Board *board) {
             if (type == PIECE_NONE) continue;
 
             DrawRectangle(c * CELL, l * CELL, CELL, CELL, PIECE_COLORS[type]);
+            DrawRectangleLines(c * CELL, l * CELL, CELL, CELL, LIGHTGRAY);
         }
     }
 }
