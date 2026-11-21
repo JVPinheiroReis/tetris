@@ -11,9 +11,9 @@
 #include "piece.h"
 
 typedef enum {
-    SCORE_PIECE_LOCKED,  // uma peca foi fixada
-    SCORE_LINES_CLEARED, // linhas completadas
-    SCORE_TIME_TICK      // passou 1 seg
+    SCORE_PIECE_LOCKED, // uma peca foi fixada
+    SCORE_ROWS_CLEARED, // linhas completadas
+    SCORE_TIME_TICK     // passou 1 seg
 } ScoreEvent;
 
 typedef struct {

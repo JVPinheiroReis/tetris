@@ -13,8 +13,10 @@ typedef enum {
     PIECE_COUNT
 } PieceType;
 
+typedef enum { ROT_0 = 0, ROT_90, ROT_180, ROT_270, ROT_COUNT } Rotation;
+
 typedef struct {
-    int lin;
+    int row;
     int col;
 } Position;
 
@@ -25,7 +27,7 @@ typedef struct {
     int rotation;
 } Piece;
 
-extern const Position PIECE_SHAPES[PIECE_COUNT][4][4];
+extern const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][4][4];
 
 void piece_move_up(Piece *p);
 void piece_move_down(Piece *p);

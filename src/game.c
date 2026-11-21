@@ -1,4 +1,5 @@
 #include "game.h"
+#include "board.h"
 #include "config.h"
 #include <stdlib.h>
 #include <time.h>
@@ -50,13 +51,12 @@ void game_init(Game *game) {
 void game_add_score(Game *game, ScoreEvent event, int amount) {
     switch (event) {
         case SCORE_PIECE_LOCKED: game->score += 10; break;
-        case SCORE_LINES_CLEARED: game->score += amount * 100; break;
+        case SCORE_ROWS_CLEARED: game->score += amount * 100; break;
         case SCORE_TIME_TICK: game->score += 1; break;
     }
 }
 
 void game_update(Game *game, float dt) {
-    // conta o tempo
     game->elapsed += dt;
     game->score_timer += dt;
     game->drop_timer += dt;
@@ -74,9 +74,9 @@ void game_update(Game *game, float dt) {
             board_fix_piece(&game->board, &game->current);
             game_add_score(game, SCORE_PIECE_LOCKED, 1);
 
-            int cleared = board_clear_lines(&game->board);
+            int cleared = board_clear_rows(&game->board);
             if (cleared > 0) {
-                game_add_score(game, SCORE_LINES_CLEARED, cleared);
+                game_add_score(game, SCORE_ROWS_CLEARED, cleared);
             }
 
             game->current = game_spawn_piece();

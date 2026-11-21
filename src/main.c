@@ -5,7 +5,7 @@
 #include "render.h"
 
 int main(void) {
-    InitWindow(COLUMNS * CELL, LINES * CELL, "Tetris");
+    InitWindow(COLUMNS * CELL, ROWS * CELL, "Tetris");
     SetTargetFPS(60);
 
     Game game;
@@ -21,18 +21,21 @@ int main(void) {
                 piece_move_right(&game.current);
             }
         }
+
         if (IsKeyPressed(KEY_RIGHT)) {
             piece_move_right(&game.current);
             if (board_collision(&game.board, &game.current)) {
                 piece_move_left(&game.current);
             }
         }
+
         if (IsKeyPressed(KEY_UP)) {
             piece_rotate(&game.current);
             if (board_collision(&game.board, &game.current)) {
                 piece_undo_rotate(&game.current);
             }
         }
+
         if (IsKeyPressed(KEY_DOWN)) {
             piece_move_down(&game.current);
             if (board_collision(&game.board, &game.current)) {
