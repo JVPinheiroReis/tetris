@@ -6,12 +6,20 @@
 
 int main(void) {
     InitWindow(COLUMNS * CELL, ROWS * CELL, "Tetris");
+    InitAudioDevice();
+
+    Music bgm = LoadMusicStream("resources/theme.mp3");
+    SetMusicVolume(bgm, 0.5f);
+    PlayMusicStream(bgm);
+
     SetTargetFPS(60);
 
     Game game;
     game_init(&game);
 
     while (!WindowShouldClose()) {
+        UpdateMusicStream(bgm);
+
         game_update(&game, GetFrameTime());
         render_draw(&game);
 
@@ -44,6 +52,8 @@ int main(void) {
         }
     }
 
+    UnloadMusicStream(bgm);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
