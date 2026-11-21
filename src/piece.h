@@ -14,16 +14,23 @@ typedef enum {
 } PieceType;
 
 typedef struct {
+    int lin;
+    int col;
+} Position;
+
+typedef struct {
     PieceType type;
     int x;
     int y;
     int rotation;
 } Piece;
 
-extern const int PIECE_SHAPES[PIECE_COUNT][4][4];
+extern const Position PIECE_SHAPES[PIECE_COUNT][4][4];
 
 void piece_move_down(Piece *p);
 void piece_move_left(Piece *p);
 void piece_move_right(Piece *p);
+void rotate(Piece *p);
+void undo_rotate(Piece *p);
 
 #endif
