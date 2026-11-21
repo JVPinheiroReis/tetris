@@ -49,4 +49,26 @@ void board_fix_piece(Board *board, const Piece *p) {
     }
 }
 
-int board_clear_lines(Board *board);
+int board_clear_lines(Board *board) {
+    int cleared = 0;
+    for (int l = LINES - 1; l >= 0; l--) {
+        int full = 1;
+        for (int c = 0; c < COLUMNS; c++) {
+            if (board->cells[l][c] == 0) {
+                full = 0;
+                break;
+            }
+        }
+        if (full) {
+            for (int row = l; row > 0; row--) {
+                memcpy(board->cells[row],
+                       board->cells[row - 1],
+                       sizeof(board->cells[row]));
+            }
+            memset(board->cells[0], 0, sizeof(board->cells[0]));
+            cleared++;
+            l++;
+        }
+    }
+    return cleared;
+}

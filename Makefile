@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Wall -Wextra -std=c11 -O2 -MMD -MP -Ilibs/raylib/include
+CFLAGS  = -Wall -Wextra -Werror -Wshadow -Wstrict-prototypes -Wundef -std=c11 -O2 -MMD -MP -Ilibs/raylib/include
 LDFLAGS = -Llibs/raylib/lib
 LIBS    = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
