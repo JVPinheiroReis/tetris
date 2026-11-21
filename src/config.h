@@ -4,4 +4,5 @@
 #define COLUMNS 15
 #define LINES 20
 #define DROP_INTERVAL 0.5f
+#define SCORE_INTERVAL 1.0f
 #endif

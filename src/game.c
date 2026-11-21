@@ -1,4 +1,5 @@
 #include "game.h"
+#include "config.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -60,8 +61,8 @@ void game_update(Game *game, float dt) {
     game->score_timer += dt;
     game->drop_timer += dt;
 
-    if (game->score_timer >= 1.0f) {
-        game->score_timer -= 1.0f; // pontos por tempo: 1 ponto a cada 1 segundo
+    if (game->score_timer >= SCORE_INTERVAL) {
+        game->score_timer -= SCORE_INTERVAL;
         game_add_score(game, SCORE_TIME_TICK, 1);
     }
 
