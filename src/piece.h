@@ -20,6 +20,8 @@ typedef struct {
     int rotation;
 } Piece;
 
+extern const int PIECE_SHAPES[PIECE_COUNT][4][4];
+
 void piece_move_down(Piece *p);
 void piece_move_left(Piece *p);
 void piece_move_right(Piece *p);
