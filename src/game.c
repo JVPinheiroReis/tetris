@@ -16,13 +16,14 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "",
     "Para jogar eh facil:",
     "Seta esquerda / direita: mover a peca",
-    "Seta para cima: girar a peca",
-    "Seta para baixo: girar a peca ao contrario",
-    "Espaco: descer a peca mais rapido",
+    "Seta para cima: rotacionar a peca",
+    "Seta para baixo: descer a peca mais rapido",
     "Para ganhar vc completa linhas para ganhar pontos",
     "",
     "Partiu voltar no tempo e jogar um classico revolucionario?",
-    "Aperte ENTER e bom jogo."};
+    "",
+    "Aperte ENTER e bom jogo."
+};
 
 void game_init(Game *game) {
     board_init(&game->board);
