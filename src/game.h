@@ -20,9 +20,9 @@ typedef struct {
     Board board;
     Piece current;
     int score;
-    float drop_timer; // tempo para queda da piece
     float elapsed; // tempo total de jogo em seg(to fazendo em ingles pra vc n
                    // reclamar)
+    float drop_timer;  // tempo para queda da piece
     float score_timer; // acumula até 1s para pontuar por tempo
 } Game;
 

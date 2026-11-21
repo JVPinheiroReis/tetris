@@ -22,15 +22,14 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "",
     "Partiu voltar no tempo e jogar um classico revolucionario?",
     "",
-    "Aperte ENTER e bom jogo."
-};
+    "Aperte ENTER e bom jogo."};
 
 void game_init(Game *game) {
     board_init(&game->board);
     game->current = (Piece){0};
     game->score = 0;
-    game->drop_timer = 0.0f;
     game->elapsed = 0.0f;
+    game->drop_timer = 0.0f;
     game->score_timer = 0.0f;
 }
 
