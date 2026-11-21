@@ -20,7 +20,11 @@ static void render_pieces(const Board *board) {
             PieceType type = board->cells[l][c];
             if (type == PIECE_NONE) continue;
 
-            DrawRectangle(c * CELL, l * CELL, CELL, CELL, PIECE_COLORS[type]);
+            DrawRectangle(c * CELL + 1,
+                          l * CELL + 1,
+                          CELL - 3,
+                          CELL - 3,
+                          PIECE_COLORS[type]);
             DrawRectangleLines(c * CELL, l * CELL, CELL, CELL, LIGHTGRAY);
         }
     }
