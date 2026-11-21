@@ -55,5 +55,7 @@ void render_draw(const Game *game) {
     render_current_piece(&game->current);
 
     DrawText(TextFormat("Score: %d", game->score), 10, 10, 20, YELLOW);
+    DrawText(TextFormat("Time: %d", (int)game->elapsed), 10, 30, 20, YELLOW);
+
     EndDrawing();
 }
