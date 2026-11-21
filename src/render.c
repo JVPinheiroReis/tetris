@@ -12,9 +12,24 @@ static const Color PIECE_COLORS[PIECE_COUNT] = {
     [PIECE_L] = ORANGE,
 };
 
+static void render_pieces(const Board *board) {
+    int l, c;
+    for (l = 0; l < LINES; l++) {
+        for (c = 0; c < COLUMNS; c++) {
+            PieceType type = board->cells[l][c];
+            if (type == PIECE_NONE) continue;
+
+            DrawRectangle(c * CELL, l * CELL, CELL, CELL, PIECE_COLORS[type]);
+        }
+    }
+}
+
 void render_draw(const Game *game) {
     BeginDrawing();
     ClearBackground(BLACK);
+
+    render_pieces(&game->board);
+
     DrawText(TextFormat("Score: %d", game->score), 10, 10, 20, YELLOW);
     EndDrawing();
 }
