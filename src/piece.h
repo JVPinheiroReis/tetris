@@ -27,6 +27,7 @@ typedef struct {
 
 extern const Position PIECE_SHAPES[PIECE_COUNT][4][4];
 
+void piece_move_up(Piece *p);
 void piece_move_down(Piece *p);
 void piece_move_left(Piece *p);
 void piece_move_right(Piece *p);

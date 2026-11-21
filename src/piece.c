@@ -54,6 +54,10 @@ const Position PIECE_SHAPES[PIECE_COUNT][4][4] =
             },
 };
 
+void piece_move_up(Piece *p) {
+    p->y--;
+}
+
 void piece_move_down(Piece *p) {
     p->y++;
 }

@@ -1,5 +1,6 @@
 #include "config.h"
 #include "game.h"
+#include "piece.h"
 #include "raylib.h"
 #include "render.h"
 
@@ -35,7 +36,7 @@ int main(void) {
         if (IsKeyPressed(KEY_DOWN)) {
             piece_move_down(&game.current);
             if (board_collision(&game.board, &game.current)) {
-                game.current.y--;
+                piece_move_up(&game.current);
             }
         }
     }
