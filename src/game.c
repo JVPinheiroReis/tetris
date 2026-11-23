@@ -87,6 +87,10 @@ void game_update(Game *game, float dt) {
             }
 
             game->current = game_spawn_piece();
+
+            if (board_collision(&game->board, &game->current)) {
+                // TODO: game over (peca nasceu colidindo, sem espaco no topo)
+            }
         }
     }
 }
