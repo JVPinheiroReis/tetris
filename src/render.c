@@ -83,8 +83,9 @@ static void render_centered_text(const char *text,
 }
 
 static void render_game_over(const Game *game) {
-    int rows = (int)(game->game_over_timer / GAME_OVER_ROW_DELAY);
-    if (rows < ROWS) {
+    bool anim_done = game->game_over_timer >= GAME_OVER_DURATION;
+    if (!anim_done) {
+        int rows = (int)(game->game_over_timer / GAME_OVER_ROW_DELAY);
         render_pieces(&game->board);
         DrawRectangle(0, 0, WINDOW_WIDTH, rows * CELL, BLACK);
     }
@@ -92,7 +93,7 @@ static void render_game_over(const Game *game) {
     render_centered_text("Game", 50, 80, RED);
     render_centered_text("Over", 140, 80, RED);
 
-    if (rows >= ROWS) {
+    if (anim_done) {
         render_centered_text(
             TextFormat("Score: %d", game->score), 260, 30, YELLOW);
         render_centered_text("Continuar?", 320, 30, WHITE);
