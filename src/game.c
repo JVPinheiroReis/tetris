@@ -3,7 +3,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include <time.h>
 
 const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "TETRIS 2.0",
@@ -40,7 +39,6 @@ static Piece game_spawn_piece(void) {
 }
 
 void game_init(Game *game) {
-    srand((unsigned int)time(NULL));
     board_init(&game->board);
     game->current = game_spawn_piece();
     game->game_over = false;
@@ -51,7 +49,13 @@ void game_init(Game *game) {
     game->game_over_timer = 0.0f;
 }
 
-void game_add_score(Game *game, ScoreEvent event, int amount) {
+typedef enum {
+    SCORE_PIECE_LOCKED,
+    SCORE_ROWS_CLEARED,
+    SCORE_TIME_TICK
+} ScoreEvent;
+
+static void game_add_score(Game *game, ScoreEvent event, int amount) {
     switch (event) {
         case SCORE_PIECE_LOCKED:
             game->score += amount * POINTS_PIECE_LOCKED;
@@ -64,6 +68,10 @@ void game_add_score(Game *game, ScoreEvent event, int amount) {
 }
 
 void game_update(Game *game, float dt) {
+    if (dt > MAX_DELTA_TIME) {
+        dt = MAX_DELTA_TIME;
+    }
+
     if (game->game_over) {
         if (game->game_over_timer < GAME_OVER_DURATION) {
             game->game_over_timer += dt;
@@ -87,7 +95,7 @@ void game_update(Game *game, float dt) {
         piece_move_down(&game->current);
 
         if (board_collision(&game->board, &game->current)) {
-            game->current.y--;
+            piece_move_up(&game->current);
 
             board_fix_piece(&game->board, &game->current);
             game_add_score(game, SCORE_PIECE_LOCKED, 1);

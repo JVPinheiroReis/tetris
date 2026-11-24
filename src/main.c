@@ -3,14 +3,22 @@
 #include "piece.h"
 #include "raylib.h"
 #include "render.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main(void) {
+    srand((unsigned int)time(NULL));
+
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitAudioDevice();
 
     Music bgm = LoadMusicStream(BGM_PATH);
-    SetMusicVolume(bgm, BGM_VOLUME);
-    PlayMusicStream(bgm);
+    bool has_bgm = IsMusicValid(bgm);
+    if (has_bgm) {
+        SetMusicVolume(bgm, BGM_VOLUME);
+        PlayMusicStream(bgm);
+    }
 
     SetTargetFPS(TARGET_FPS);
 
@@ -18,58 +26,66 @@ int main(void) {
     game_init(&game);
 
     while (!WindowShouldClose()) {
-        game_update(&game, GetFrameTime());
-        render_draw(&game);
-
         if (game.game_over) {
-            if (IsMusicStreamPlaying(bgm)) {
+            if (has_bgm && IsMusicStreamPlaying(bgm)) {
                 PauseMusicStream(bgm);
             }
 
             if (IsKeyPressed(KEY_ENTER)) {
                 game_init(&game);
-                StopMusicStream(bgm);
-                PlayMusicStream(bgm);
+                if (has_bgm) {
+                    StopMusicStream(bgm);
+                    PlayMusicStream(bgm);
+                }
             }
             else if (IsKeyPressed(KEY_N)) {
                 break;
             }
-
-            continue;
         }
-
-        UpdateMusicStream(bgm);
-
-        if (IsKeyPressed(KEY_LEFT)) {
-            piece_move_left(&game.current);
-            if (board_collision(&game.board, &game.current)) {
-                piece_move_right(&game.current);
+        else {
+            if (has_bgm) {
+                UpdateMusicStream(bgm);
             }
-        }
 
-        if (IsKeyPressed(KEY_RIGHT)) {
-            piece_move_right(&game.current);
-            if (board_collision(&game.board, &game.current)) {
+            if (IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)) {
                 piece_move_left(&game.current);
+                if (board_collision(&game.board, &game.current)) {
+                    piece_move_right(&game.current);
+                }
+            }
+
+            if (IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT)) {
+                piece_move_right(&game.current);
+                if (board_collision(&game.board, &game.current)) {
+                    piece_move_left(&game.current);
+                }
+            }
+
+            if (IsKeyPressed(KEY_UP)) {
+                piece_rotate(&game.current);
+                if (board_collision(&game.board, &game.current)) {
+                    piece_undo_rotate(&game.current);
+                }
+            }
+
+            if (IsKeyPressed(KEY_DOWN) || IsKeyPressedRepeat(KEY_DOWN)) {
+                piece_move_down(&game.current);
+                if (board_collision(&game.board, &game.current)) {
+                    piece_move_up(&game.current);
+                }
+                else {
+                    game.drop_timer = 0.0f;
+                }
             }
         }
 
-        if (IsKeyPressed(KEY_UP)) {
-            piece_rotate(&game.current);
-            if (board_collision(&game.board, &game.current)) {
-                piece_undo_rotate(&game.current);
-            }
-        }
-
-        if (IsKeyPressed(KEY_DOWN) || IsKeyPressedRepeat(KEY_DOWN)) {
-            piece_move_down(&game.current);
-            if (board_collision(&game.board, &game.current)) {
-                piece_move_up(&game.current);
-            }
-        }
+        game_update(&game, GetFrameTime());
+        render_draw(&game);
     }
 
-    UnloadMusicStream(bgm);
+    if (has_bgm) {
+        UnloadMusicStream(bgm);
+    }
     CloseAudioDevice();
     CloseWindow();
     return 0;
