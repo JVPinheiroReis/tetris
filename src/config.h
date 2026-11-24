@@ -20,7 +20,7 @@
 // Tempos (em segundos)
 #define DROP_INTERVAL 0.5f
 #define SCORE_INTERVAL 1.0f
-#define GAME_OVER_ROW_DELAY 0.05f
+#define GAME_OVER_ROW_DELAY 0.10f
 #define GAME_OVER_DURATION (ROWS * GAME_OVER_ROW_DELAY)
 #define MAX_DELTA_TIME 0.1f
 

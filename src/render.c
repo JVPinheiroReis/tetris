@@ -94,8 +94,11 @@ static void render_game_over(const Game *game) {
         render_centered_text("Over", 140, 80, RED);
         render_centered_text(
             TextFormat("Score: %d", game->score), 260, 30, YELLOW);
-        render_centered_text("Continuar?", 320, 30, WHITE);
-        render_centered_text("[ENTER] Sim   [N] Nao", 370, 24, LIGHTGRAY);
+        render_centered_text(
+            TextFormat("Time: %d", game->elapsed), 300, 30, YELLOW);
+
+        render_centered_text("Continuar?", 340, 30, WHITE);
+        render_centered_text("[ENTER] Sim   [N] Nao", 380, 24, LIGHTGRAY);
     }
 }
 
