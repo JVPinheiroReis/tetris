@@ -87,7 +87,7 @@ void game_update(Game *game, float dt) {
         piece_move_down(&game->current);
 
         if (board_collision(&game->board, &game->current)) {
-            game->current.y--;
+            piece_move_up(&game->current);
 
             board_fix_piece(&game->board, &game->current);
             game_add_score(game, SCORE_PIECE_LOCKED, 1);
