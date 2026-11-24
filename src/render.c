@@ -41,8 +41,9 @@ static void render_pieces(const Board *board) {
 static void render_piece(const Piece *p, bool preview) {
     if (p->type == PIECE_NONE) return;
 
-    for (int r = 0; r < PIECE_SIZE; r++) {
-        for (int c = 0; c < PIECE_SIZE; c++) {
+    int r, c;
+    for (r = 0; r < PIECE_SIZE; r++) {
+        for (c = 0; c < PIECE_SIZE; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
             int row = p->y + r;

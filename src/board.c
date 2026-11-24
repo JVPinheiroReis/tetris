@@ -50,10 +50,11 @@ void board_fix_piece(Board *board, const Piece *p) {
 
 int board_clear_rows(Board *board) {
     int cleared = 0;
-    for (int r = ROWS - 1; r >= 0; r--) {
+    int r, c;
+    for (r = ROWS - 1; r >= 0; r--) {
         bool full = true;
 
-        for (int c = 0; c < COLUMNS; c++) {
+        for (c = 0; c < COLUMNS; c++) {
             if (board->cells[r][c] == PIECE_NONE) {
                 full = false;
                 break;

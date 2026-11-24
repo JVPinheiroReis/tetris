@@ -1,6 +1,5 @@
 #include "config.h"
 #include "game.h"
-#include "piece.h"
 #include "raylib.h"
 #include "render.h"
 #include <stdbool.h>
@@ -48,34 +47,19 @@ int main(void) {
             }
 
             if (IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)) {
-                piece_move_left(&game.current);
-                if (board_collision(&game.board, &game.current)) {
-                    piece_move_right(&game.current);
-                }
+                game_try_move(&game, -1, 0);
             }
 
             if (IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT)) {
-                piece_move_right(&game.current);
-                if (board_collision(&game.board, &game.current)) {
-                    piece_move_left(&game.current);
-                }
+                game_try_move(&game, 1, 0);
             }
 
             if (IsKeyPressed(KEY_UP)) {
-                piece_rotate(&game.current);
-                if (board_collision(&game.board, &game.current)) {
-                    piece_undo_rotate(&game.current);
-                }
+                game_try_rotate(&game);
             }
 
             if (IsKeyPressed(KEY_DOWN) || IsKeyPressedRepeat(KEY_DOWN)) {
-                piece_move_down(&game.current);
-                if (board_collision(&game.board, &game.current)) {
-                    piece_move_up(&game.current);
-                }
-                else {
-                    game.drop_timer = 0.0f;
-                }
+                game_soft_drop(&game);
             }
         }
 

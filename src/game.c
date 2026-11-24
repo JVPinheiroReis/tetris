@@ -39,31 +39,33 @@ static Piece game_spawn_piece(void) {
 }
 
 void game_init(Game *game) {
-    board_init(&game->board);
-    game->current = game_spawn_piece();
-    game->game_over = false;
-    game->score = 0;
-    game->elapsed = 0.0f;
-    game->drop_timer = 0.0f;
-    game->score_timer = 0.0f;
-    game->game_over_timer = 0.0f;
+    *game = (Game){.current = game_spawn_piece()};
 }
 
-typedef enum {
-    SCORE_PIECE_LOCKED,
-    SCORE_ROWS_CLEARED,
-    SCORE_TIME_TICK
-} ScoreEvent;
+bool game_try_move(Game *game, int dx, int dy) {
+    Piece next = game->current;
+    next.x += dx;
+    next.y += dy;
+    if (board_collision(&game->board, &next)) {
+        return false;
+    }
+    game->current = next;
+    return true;
+}
 
-static void game_add_score(Game *game, ScoreEvent event, int amount) {
-    switch (event) {
-        case SCORE_PIECE_LOCKED:
-            game->score += amount * POINTS_PIECE_LOCKED;
-            break;
-        case SCORE_ROWS_CLEARED:
-            game->score += amount * POINTS_LINE_CLEARED;
-            break;
-        case SCORE_TIME_TICK: game->score += amount * POINTS_TIME_TICK; break;
+bool game_try_rotate(Game *game) {
+    Piece next = game->current;
+    piece_rotate(&next);
+    if (board_collision(&game->board, &next)) {
+        return false;
+    }
+    game->current = next;
+    return true;
+}
+
+void game_soft_drop(Game *game) {
+    if (game_try_move(game, 0, 1)) {
+        game->drop_timer = 0.0f;
     }
 }
 
@@ -85,24 +87,19 @@ void game_update(Game *game, float dt) {
 
     if (game->score_timer >= SCORE_INTERVAL) {
         game->score_timer -= SCORE_INTERVAL;
-
-        game_add_score(game, SCORE_TIME_TICK, 1);
+        game->score += POINTS_TIME_TICK;
     }
 
     if (game->drop_timer >= DROP_INTERVAL) {
         game->drop_timer -= DROP_INTERVAL;
 
-        piece_move_down(&game->current);
-
-        if (board_collision(&game->board, &game->current)) {
-            piece_move_up(&game->current);
-
+        if (!game_try_move(game, 0, 1)) {
             board_fix_piece(&game->board, &game->current);
-            game_add_score(game, SCORE_PIECE_LOCKED, 1);
+            game->score += POINTS_PIECE_LOCKED;
 
             int cleared = board_clear_rows(&game->board);
             if (cleared > 0) {
-                game_add_score(game, SCORE_ROWS_CLEARED, cleared);
+                game->score += cleared * POINTS_LINE_CLEARED;
             }
 
             game->current = game_spawn_piece();
