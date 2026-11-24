@@ -25,13 +25,19 @@ int main(void) {
     game_init(&game);
 
     while (!WindowShouldClose()) {
-        if (game.game_over) {
+        if (game.state == STATE_INTRO) {
+            if (IsKeyPressed(KEY_ENTER)) {
+                game.state = STATE_PLAYING;
+            }
+        }
+        else if (game.state == STATE_GAME_OVER) {
             if (has_bgm && IsMusicStreamPlaying(bgm)) {
                 PauseMusicStream(bgm);
             }
 
             if (IsKeyPressed(KEY_ENTER)) {
                 game_init(&game);
+                game.state = STATE_PLAYING;
                 if (has_bgm) {
                     StopMusicStream(bgm);
                     PlayMusicStream(bgm);

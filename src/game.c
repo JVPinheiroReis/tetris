@@ -74,7 +74,11 @@ void game_update(Game *game, float dt) {
         dt = MAX_DELTA_TIME;
     }
 
-    if (game->game_over) {
+    if (game->state == STATE_INTRO) {
+        return;
+    }
+
+    if (game->state == STATE_GAME_OVER) {
         if (game->game_over_timer < GAME_OVER_DURATION) {
             game->game_over_timer += dt;
         }
@@ -105,7 +109,7 @@ void game_update(Game *game, float dt) {
             game->current = game_spawn_piece();
 
             if (board_collision(&game->board, &game->current)) {
-                game->game_over = true;
+                game->state = STATE_GAME_OVER;
             }
         }
     }
