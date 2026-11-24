@@ -19,6 +19,12 @@ int main(void) {
         PlayMusicStream(bgm);
     }
 
+    Music game_over_bgm = LoadMusicStream(GAME_OVER_BGM_PATH);
+    bool has_game_over_bgm = IsMusicValid(game_over_bgm);
+    if (has_game_over_bgm) {
+        SetMusicVolume(game_over_bgm, GAME_OVER_BGM_VOLUME);
+    }
+
     Sound sfx_clear_row = LoadSound(SFX_CLEAR_ROW_PATH);
     bool has_sfx_clear_row = IsSoundValid(sfx_clear_row);
     if (has_sfx_clear_row) {
@@ -41,9 +47,19 @@ int main(void) {
                 PauseMusicStream(bgm);
             }
 
+            if (has_game_over_bgm) {
+                if (!IsMusicStreamPlaying(game_over_bgm)) {
+                    PlayMusicStream(game_over_bgm);
+                }
+                UpdateMusicStream(game_over_bgm);
+            }
+
             if (IsKeyPressed(KEY_ENTER)) {
                 game_init(&game);
                 game.state = STATE_PLAYING;
+                if (has_game_over_bgm) {
+                    StopMusicStream(game_over_bgm);
+                }
                 if (has_bgm) {
                     StopMusicStream(bgm);
                     PlayMusicStream(bgm);
@@ -83,6 +99,7 @@ int main(void) {
     }
 
     if (has_sfx_clear_row) UnloadSound(sfx_clear_row);
+    if (has_game_over_bgm) UnloadMusicStream(game_over_bgm);
     if (has_bgm) UnloadMusicStream(bgm);
 
     CloseAudioDevice();
