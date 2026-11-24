@@ -34,7 +34,9 @@ int main(void) {
     SetTargetFPS(TARGET_FPS);
 
     Game game;
-    game_init(&game);
+    if (!game_load(&game, SAVE_PATH)) {
+        game_init(&game);
+    }
 
     while (!WindowShouldClose()) {
         if (game.state == STATE_INTRO) {
@@ -96,6 +98,10 @@ int main(void) {
             PlaySound(sfx_clear_row);
         }
         render_draw(&game);
+    }
+
+    if (game.state == STATE_PLAYING) {
+        game_save(&game, SAVE_PATH);
     }
 
     if (has_sfx_clear_row) UnloadSound(sfx_clear_row);
