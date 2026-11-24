@@ -3,8 +3,12 @@
 #include "piece.h"
 #include "raylib.h"
 #include "render.h"
+#include <stdlib.h>
+#include <time.h>
 
 int main(void) {
+    srand((unsigned int)time(NULL));
+
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitAudioDevice();
 

@@ -3,7 +3,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdlib.h>
-#include <time.h>
 
 const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "TETRIS 2.0",
@@ -40,7 +39,6 @@ static Piece game_spawn_piece(void) {
 }
 
 void game_init(Game *game) {
-    srand((unsigned int)time(NULL));
     board_init(&game->board);
     game->current = game_spawn_piece();
     game->game_over = false;
