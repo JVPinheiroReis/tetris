@@ -35,14 +35,14 @@ int main(void) {
         else {
             UpdateMusicStream(bgm);
 
-            if (IsKeyPressed(KEY_LEFT)) {
+            if (IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)) {
                 piece_move_left(&game.current);
                 if (board_collision(&game.board, &game.current)) {
                     piece_move_right(&game.current);
                 }
             }
 
-            if (IsKeyPressed(KEY_RIGHT)) {
+            if (IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT)) {
                 piece_move_right(&game.current);
                 if (board_collision(&game.board, &game.current)) {
                     piece_move_left(&game.current);
