@@ -89,10 +89,9 @@ static void render_game_over(const Game *game) {
         DrawRectangle(0, 0, WINDOW_WIDTH, rows * CELL, BLACK);
     }
 
-    render_centered_text("Game", 50, 80, RED);
-    render_centered_text("Over", 140, 80, RED);
-
     if (anim_done) {
+        render_centered_text("Game", 50, 80, RED);
+        render_centered_text("Over", 140, 80, RED);
         render_centered_text(
             TextFormat("Score: %d", game->score), 260, 30, YELLOW);
         render_centered_text("Continuar?", 320, 30, WHITE);
