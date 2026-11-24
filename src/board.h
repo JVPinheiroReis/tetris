@@ -9,7 +9,6 @@ typedef struct {
     PieceType cells[ROWS][COLUMNS];
 } Board;
 
-void board_init(Board *board);
 bool board_is_free(const Board *board, int row, int col);
 bool board_collision(const Board *board, const Piece *p);
 void board_fix_piece(Board *board, const Piece *p);

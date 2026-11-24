@@ -81,6 +81,27 @@ static void render_centered_text(const char *text, int y, int font_size,
     DrawText(text, x, y, font_size, color);
 }
 
+static void render_instructions(void) {
+    render_centered_text(game_instructions[0], 30, 40, YELLOW);
+
+    int i;
+    int y = 90;
+    for (i = 1; i < INSTRUCTIONS_COUNT; i++) {
+        if (game_instructions[i][0] == '\0') {
+            y += 12;
+            continue;
+        }
+
+        if (i == INSTRUCTIONS_COUNT - 1) {
+            render_centered_text(game_instructions[i], y + 10, 22, YELLOW);
+        }
+        else {
+            render_centered_text(game_instructions[i], y, 12, WHITE);
+            y += 20;
+        }
+    }
+}
+
 static void render_game_over(const Game *game) {
     bool anim_done = game->game_over_timer >= GAME_OVER_DURATION;
     if (!anim_done) {
@@ -89,14 +110,16 @@ static void render_game_over(const Game *game) {
         DrawRectangle(0, 0, WINDOW_WIDTH, rows * CELL, BLACK);
     }
 
-    render_centered_text("Game", 50, 80, RED);
-    render_centered_text("Over", 140, 80, RED);
-
     if (anim_done) {
+        render_centered_text("Game", 50, 80, RED);
+        render_centered_text("Over", 140, 80, RED);
         render_centered_text(
             TextFormat("Score: %d", game->score), 260, 30, YELLOW);
-        render_centered_text("Continuar?", 320, 30, WHITE);
-        render_centered_text("[ENTER] Sim   [N] Nao", 370, 24, LIGHTGRAY);
+        render_centered_text(
+            TextFormat("Time: %d", game->elapsed), 300, 30, YELLOW);
+
+        render_centered_text("Continuar?", 340, 30, WHITE);
+        render_centered_text("[ENTER] Sim   [N] Nao", 380, 24, LIGHTGRAY);
     }
 }
 
@@ -104,7 +127,10 @@ void render_draw(const Game *game) {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    if (game->game_over) {
+    if (game->state == STATE_INTRO) {
+        render_instructions();
+    }
+    else if (game->state == STATE_GAME_OVER) {
         render_game_over(game);
     }
     else {

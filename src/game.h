@@ -9,10 +9,16 @@
 #define INSTRUCTIONS_COUNT 22
 extern const char *game_instructions[INSTRUCTIONS_COUNT];
 
+typedef enum {
+    STATE_INTRO = 0,
+    STATE_PLAYING,
+    STATE_GAME_OVER
+} GameState;
+
 typedef struct {
     Board board;
     Piece current;
-    bool game_over;
+    GameState state;
     int score;
     float elapsed;         // tempo total de jogo em segundos
     float drop_timer;      // tempo para queda da peca
