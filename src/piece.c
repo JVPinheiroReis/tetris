@@ -1,6 +1,6 @@
 #include "piece.h"
 
-const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][4][4] = {
+const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][PIECE_SIZE][PIECE_SIZE] = {
     [PIECE_NONE] = {{{0}}},
     [PIECE_I] = {
         [ROT_0] = {

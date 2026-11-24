@@ -41,8 +41,8 @@ static void render_pieces(const Board *board) {
 static void render_piece(const Piece *p, bool preview) {
     if (p->type == PIECE_NONE) return;
 
-    for (int r = 0; r < 4; r++) {
-        for (int c = 0; c < 4; c++) {
+    for (int r = 0; r < PIECE_SIZE; r++) {
+        for (int c = 0; c < PIECE_SIZE; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
             int row = p->y + r;
@@ -78,7 +78,7 @@ static void render_centered_text(const char *text,
                                  int y,
                                  int font_size,
                                  Color color) {
-    int x = (COLUMNS * CELL - MeasureText(text, font_size)) / 2;
+    int x = (WINDOW_WIDTH - MeasureText(text, font_size)) / 2;
     DrawText(text, x, y, font_size, color);
 }
 
@@ -86,7 +86,7 @@ static void render_game_over(const Game *game) {
     int rows = (int)(game->game_over_timer / GAME_OVER_ROW_DELAY);
     if (rows < ROWS) {
         render_pieces(&game->board);
-        DrawRectangle(0, 0, COLUMNS * CELL, rows * CELL, BLACK);
+        DrawRectangle(0, 0, WINDOW_WIDTH, rows * CELL, BLACK);
     }
 
     render_centered_text("Game", 50, 80, RED);

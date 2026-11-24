@@ -23,8 +23,8 @@ int board_is_free(const Board *board, int row, int col) {
 
 int board_collision(const Board *board, const Piece *p) {
     int r, c;
-    for (r = 0; r < 4; r++) {
-        for (c = 0; c < 4; c++) {
+    for (r = 0; r < PIECE_SIZE; r++) {
+        for (c = 0; c < PIECE_SIZE; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
             if (!board_is_free(board, p->y + r, p->x + c)) {
@@ -37,8 +37,8 @@ int board_collision(const Board *board, const Piece *p) {
 
 void board_fix_piece(Board *board, const Piece *p) {
     int r, c;
-    for (r = 0; r < 4; r++) {
-        for (c = 0; c < 4; c++) {
+    for (r = 0; r < PIECE_SIZE; r++) {
+        for (c = 0; c < PIECE_SIZE; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
             int row = p->y + r;

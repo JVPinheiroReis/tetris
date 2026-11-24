@@ -5,14 +5,14 @@
 #include "render.h"
 
 int main(void) {
-    InitWindow(COLUMNS * CELL, ROWS * CELL, "Tetris");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     InitAudioDevice();
 
-    Music bgm = LoadMusicStream("resources/theme.mp3");
-    SetMusicVolume(bgm, 0.5f);
+    Music bgm = LoadMusicStream(BGM_PATH);
+    SetMusicVolume(bgm, BGM_VOLUME);
     PlayMusicStream(bgm);
 
-    SetTargetFPS(60);
+    SetTargetFPS(TARGET_FPS);
 
     Game game;
     game_init(&game);

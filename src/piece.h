@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include "config.h"
+
 typedef enum {
     PIECE_NONE = 0,
     PIECE_I,
@@ -15,7 +17,7 @@ typedef enum {
 
 typedef enum { ROT_0 = 0, ROT_90, ROT_180, ROT_270, ROT_COUNT } Rotation;
 
-extern const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][4][4];
+extern const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][PIECE_SIZE][PIECE_SIZE];
 
 typedef struct {
     int row;

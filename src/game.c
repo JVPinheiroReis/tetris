@@ -32,7 +32,7 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
 static Piece game_spawn_piece(void) {
     Piece p = {
         .type = (PieceType)(1 + rand() % (PIECE_COUNT - 1)),
-        .x = COLUMNS / 2 - 2,
+        .x = COLUMNS / 2 - PIECE_SIZE / 2,
         .y = 0,
         .rotation = 0,
     };
@@ -65,7 +65,7 @@ void game_add_score(Game *game, ScoreEvent event, int amount) {
 
 void game_update(Game *game, float dt) {
     if (game->game_over) {
-        if (game->game_over_timer < ROWS * GAME_OVER_ROW_DELAY) {
+        if (game->game_over_timer < GAME_OVER_DURATION) {
             game->game_over_timer += dt;
         }
         return;
