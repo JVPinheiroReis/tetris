@@ -82,12 +82,9 @@ int main(void) {
         render_draw(&game);
     }
 
-    if (has_sfx_clear_row) {
-        UnloadSound(sfx_clear_row);
-    }
-    if (has_bgm) {
-        UnloadMusicStream(bgm);
-    }
+    if (has_sfx_clear_row) UnloadSound(sfx_clear_row);
+    if (has_bgm) UnloadMusicStream(bgm);
+
     CloseAudioDevice();
     CloseWindow();
     return 0;
