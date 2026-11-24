@@ -64,6 +64,10 @@ void game_add_score(Game *game, ScoreEvent event, int amount) {
 }
 
 void game_update(Game *game, float dt) {
+    if (dt > MAX_DELTA_TIME) {
+        dt = MAX_DELTA_TIME;
+    }
+
     if (game->game_over) {
         if (game->game_over_timer < GAME_OVER_DURATION) {
             game->game_over_timer += dt;
