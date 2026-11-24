@@ -1,10 +1,13 @@
 #include "board.h"
 #include "config.h"
 #include "piece.h"
+#include <stdbool.h>
 #include <string.h>
 
+_Static_assert(PIECE_NONE == 0, "PIECE_NONE must be 0 for memset");
+
 void board_init(Board *board) {
-    memset(board->cells, PIECE_NONE, sizeof(board->cells));
+    memset(board->cells, 0, sizeof(board->cells));
 }
 
 bool board_is_free(const Board *board, int row, int col) {
@@ -47,25 +50,24 @@ void board_fix_piece(Board *board, const Piece *p) {
 
 int board_clear_rows(Board *board) {
     int cleared = 0;
-    int r, c, row;
-    for (r = ROWS - 1; r >= 0; r--) {
-        int full = 1;
+    for (int r = ROWS - 1; r >= 0; r--) {
+        bool full = true;
 
-        for (c = 0; c < COLUMNS; c++) {
+        for (int c = 0; c < COLUMNS; c++) {
             if (board->cells[r][c] == PIECE_NONE) {
-                full = 0;
+                full = false;
                 break;
             }
         }
 
         if (full) {
-            for (row = r; row >= 1; row--) {
-                memcpy(board->cells[row],
-                       board->cells[row - 1],
-                       sizeof(board->cells[row]));
+            if (r > 0) {
+                memmove(&board->cells[1],
+                        &board->cells[0],
+                        (size_t)r * sizeof(board->cells[0]));
             }
 
-            memset(board->cells[0], PIECE_NONE, sizeof(board->cells[0]));
+            memset(board->cells[0], 0, sizeof(board->cells[0]));
 
             cleared++;
             r++;
