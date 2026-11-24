@@ -20,15 +20,10 @@ typedef enum { ROT_0 = 0, ROT_90, ROT_180, ROT_270, ROT_COUNT } Rotation;
 extern const int PIECE_SHAPES[PIECE_COUNT][ROT_COUNT][PIECE_SIZE][PIECE_SIZE];
 
 typedef struct {
-    int row;
-    int col;
-} Position;
-
-typedef struct {
     PieceType type;
     int x;
     int y;
-    int rotation;
+    Rotation rotation;
 } Piece;
 
 void piece_move_up(Piece *p);

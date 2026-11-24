@@ -203,9 +203,9 @@ void piece_move_right(Piece *p) {
 }
 
 void piece_rotate(Piece *p) {
-    p->rotation = (p->rotation + 1) % ROT_COUNT;
+    p->rotation = (Rotation)((p->rotation + 1) % ROT_COUNT);
 }
 
 void piece_undo_rotate(Piece *p) {
-    p->rotation = (p->rotation + ROT_COUNT - 1) % ROT_COUNT;
+    p->rotation = (Rotation)((p->rotation + ROT_COUNT - 1) % ROT_COUNT);
 }
