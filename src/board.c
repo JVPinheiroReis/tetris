@@ -4,12 +4,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-_Static_assert(PIECE_NONE == 0, "PIECE_NONE must be 0 for memset");
-
-void board_init(Board *board) {
-    memset(board->cells, 0, sizeof(board->cells));
-}
-
 bool board_is_free(const Board *board, int row, int col) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
         return false;
@@ -50,10 +44,11 @@ void board_fix_piece(Board *board, const Piece *p) {
 
 int board_clear_rows(Board *board) {
     int cleared = 0;
-    for (int r = ROWS - 1; r >= 0; r--) {
+    int r, c;
+    for (r = ROWS - 1; r >= 0; r--) {
         bool full = true;
 
-        for (int c = 0; c < COLUMNS; c++) {
+        for (c = 0; c < COLUMNS; c++) {
             if (board->cells[r][c] == PIECE_NONE) {
                 full = false;
                 break;
