@@ -9,6 +9,7 @@
 
 #include "board.h"
 #include "piece.h"
+#include <stdbool.h>
 
 #define INSTRUCTIONS_COUNT 22
 extern const char *game_instructions[INSTRUCTIONS_COUNT];
@@ -22,11 +23,13 @@ typedef enum {
 typedef struct {
     Board board;
     Piece current;
+    bool game_over;
     int score;
     float elapsed; // tempo total de jogo em seg(to fazendo em ingles pra vc n
                    // reclamar)
-    float drop_timer;  // tempo para queda da piece
-    float score_timer; // acumula até 1s para pontuar por tempo
+    float drop_timer;      // tempo para queda da piece
+    float score_timer;     // acumula até 1s para pontuar por tempo
+    float game_over_timer; // tempo decorrido na tela de game over
 } Game;
 
 void game_init(Game *game);

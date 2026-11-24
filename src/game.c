@@ -1,6 +1,7 @@
 #include "game.h"
 #include "board.h"
 #include "config.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -42,10 +43,12 @@ void game_init(Game *game) {
     srand((unsigned int)time(NULL));
     board_init(&game->board);
     game->current = game_spawn_piece();
+    game->game_over = false;
     game->score = 0;
     game->elapsed = 0.0f;
     game->drop_timer = 0.0f;
     game->score_timer = 0.0f;
+    game->game_over_timer = 0.0f;
 }
 
 void game_add_score(Game *game, ScoreEvent event, int amount) {
@@ -61,6 +64,13 @@ void game_add_score(Game *game, ScoreEvent event, int amount) {
 }
 
 void game_update(Game *game, float dt) {
+    if (game->game_over) {
+        if (game->game_over_timer < ROWS * GAME_OVER_ROW_DELAY) {
+            game->game_over_timer += dt;
+        }
+        return;
+    }
+
     game->elapsed += dt;
     game->score_timer += dt;
     game->drop_timer += dt;
@@ -78,6 +88,7 @@ void game_update(Game *game, float dt) {
 
         if (board_collision(&game->board, &game->current)) {
             game->current.y--;
+
             board_fix_piece(&game->board, &game->current);
             game_add_score(game, SCORE_PIECE_LOCKED, 1);
 
@@ -89,7 +100,7 @@ void game_update(Game *game, float dt) {
             game->current = game_spawn_piece();
 
             if (board_collision(&game->board, &game->current)) {
-                // TODO: game over (peca nasceu colidindo, sem espaco no topo)
+                game->game_over = true;
             }
         }
     }
