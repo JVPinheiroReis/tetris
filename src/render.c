@@ -74,9 +74,7 @@ static void render_current_piece_preview(const Board *board, const Piece *p) {
     render_piece(&pp, true);
 }
 
-static void render_centered_text(const char *text,
-                                 int y,
-                                 int font_size,
+static void render_centered_text(const char *text, int y, int font_size,
                                  Color color) {
     int x = (WINDOW_WIDTH - MeasureText(text, font_size)) / 2;
     DrawText(text, x, y, font_size, color);
@@ -114,7 +112,8 @@ void render_draw(const Game *game) {
         render_piece(&game->current, false);
 
         DrawText(TextFormat("Score: %d", game->score), 10, 10, 20, YELLOW);
-        DrawText(TextFormat("Time: %d", (int)game->elapsed), 10, 30, 20, YELLOW);
+        DrawText(
+            TextFormat("Time: %d", (int)game->elapsed), 10, 30, 20, YELLOW);
     }
 
     EndDrawing();
