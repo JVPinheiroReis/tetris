@@ -61,6 +61,9 @@ int main(void) {
                 if (board_collision(&game.board, &game.current)) {
                     piece_move_up(&game.current);
                 }
+                else {
+                    game.drop_timer = 0.0f;
+                }
             }
         }
 
