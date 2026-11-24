@@ -2,6 +2,7 @@
 #include "board.h"
 #include "config.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 const char *game_instructions[INSTRUCTIONS_COUNT] = {
@@ -112,9 +113,36 @@ int game_update(Game *game, float dt) {
 
             if (board_collision(&game->board, &game->current)) {
                 game->state = STATE_GAME_OVER;
+                game_delete_save(SAVE_PATH);
             }
         }
     }
 
     return cleared;
+}
+
+bool game_save(const Game *game, const char *path) {
+    FILE *f = fopen(path, "wb");
+    if (!f) {
+        return false;
+    }
+
+    bool ok = fwrite(game, sizeof(*game), 1, f) == 1;
+    fclose(f);
+    return ok;
+}
+
+bool game_load(Game *game, const char *path) {
+    FILE *f = fopen(path, "rb");
+    if (!f) {
+        return false;
+    }
+
+    bool ok = fread(game, sizeof(*game), 1, f) == 1;
+    fclose(f);
+    return ok;
+}
+
+void game_delete_save(const char *path) {
+    remove(path);
 }

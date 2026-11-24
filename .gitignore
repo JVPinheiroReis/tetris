@@ -3,3 +3,4 @@
 build/
 tetris
 compile_commands.json
+save.dat

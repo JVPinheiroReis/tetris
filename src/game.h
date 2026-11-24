@@ -31,5 +31,8 @@ int game_update(Game *game, float dt);
 bool game_try_move(Game *game, int dx, int dy);
 bool game_try_rotate(Game *game);
 void game_soft_drop(Game *game);
+bool game_save(const Game *game, const char *path);
+bool game_load(Game *game, const char *path);
+void game_delete_save(const char *path);
 
 #endif

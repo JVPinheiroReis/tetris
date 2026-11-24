@@ -34,4 +34,7 @@
 #define POINTS_LINE_CLEARED 100
 #define POINTS_TIME_TICK 1
 
+// Persistencia
+#define SAVE_PATH "save.dat"
+
 #endif
