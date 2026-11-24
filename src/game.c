@@ -51,7 +51,13 @@ void game_init(Game *game) {
     game->game_over_timer = 0.0f;
 }
 
-void game_add_score(Game *game, ScoreEvent event, int amount) {
+typedef enum {
+    SCORE_PIECE_LOCKED,
+    SCORE_ROWS_CLEARED,
+    SCORE_TIME_TICK
+} ScoreEvent;
+
+static void game_add_score(Game *game, ScoreEvent event, int amount) {
     switch (event) {
         case SCORE_PIECE_LOCKED:
             game->score += amount * POINTS_PIECE_LOCKED;
