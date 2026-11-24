@@ -16,6 +16,29 @@ static const Color PIECE_COLORS[PIECE_COUNT] = {
     [PIECE_L] = ORANGE,
 };
 
+static const int SKULL_SHAPE[ROWS][COLUMNS] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0},
+    {0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0},
+    {0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+};
+
 static void render_draw_cell_lines(int r, int c) {
     DrawRectangleLines(c * CELL, r * CELL, CELL, CELL, LIGHTGRAY);
 }
@@ -102,25 +125,43 @@ static void render_instructions(void) {
     }
 }
 
+static void render_draw_skull_transition(const Board *board, int rows) {
+    int r, c;
+    for (r = 0; r < ROWS; r++) {
+        for (c = 0; c < COLUMNS; c++) {
+            if (r < rows) {
+                if (SKULL_SHAPE[r][c]) {
+                    DrawRectangle(
+                        c * CELL + 1, r * CELL + 1, CELL - 3, CELL - 3, WHITE);
+                    render_draw_cell_lines(r, c);
+                }
+            }
+            else {
+                PieceType type = board->cells[r][c];
+                if (type != PIECE_NONE) {
+                    render_draw_cell(r, c, type);
+                }
+            }
+        }
+    }
+}
+
 static void render_game_over(const Game *game) {
-    bool anim_done = game->game_over_timer >= GAME_OVER_DURATION;
-    if (!anim_done) {
+    if (game->game_over_timer < GAME_OVER_DURATION) {
         int rows = (int)(game->game_over_timer / GAME_OVER_ROW_DELAY);
-        render_pieces(&game->board);
-        DrawRectangle(0, 0, WINDOW_WIDTH, rows * CELL, BLACK);
+        if (rows > ROWS) rows = ROWS;
+        render_draw_skull_transition(&game->board, rows);
+        return;
     }
 
-    if (anim_done) {
-        render_centered_text("Game", 50, 80, RED);
-        render_centered_text("Over", 140, 80, RED);
-        render_centered_text(
-            TextFormat("Score: %d", game->score), 260, 30, YELLOW);
-        render_centered_text(
-            TextFormat("Time: %d", game->elapsed), 300, 30, YELLOW);
+    render_centered_text("Game", 50, 80, RED);
+    render_centered_text("Over", 140, 80, RED);
+    render_centered_text(TextFormat("Score: %d", game->score), 260, 30, YELLOW);
+    render_centered_text(
+        TextFormat("Time: %d", (int)game->elapsed), 300, 30, YELLOW);
 
-        render_centered_text("Continuar?", 340, 30, WHITE);
-        render_centered_text("[ENTER] Sim   [N] Nao", 380, 24, LIGHTGRAY);
-    }
+    render_centered_text("Continuar?", 340, 30, WHITE);
+    render_centered_text("[ENTER] Sim   [N] Nao", 380, 24, LIGHTGRAY);
 }
 
 void render_draw(const Game *game) {
