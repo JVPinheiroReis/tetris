@@ -3,6 +3,7 @@
 #include "piece.h"
 #include "raylib.h"
 #include "render.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -13,8 +14,11 @@ int main(void) {
     InitAudioDevice();
 
     Music bgm = LoadMusicStream(BGM_PATH);
-    SetMusicVolume(bgm, BGM_VOLUME);
-    PlayMusicStream(bgm);
+    bool has_bgm = IsMusicValid(bgm);
+    if (has_bgm) {
+        SetMusicVolume(bgm, BGM_VOLUME);
+        PlayMusicStream(bgm);
+    }
 
     SetTargetFPS(TARGET_FPS);
 
@@ -23,21 +27,25 @@ int main(void) {
 
     while (!WindowShouldClose()) {
         if (game.game_over) {
-            if (IsMusicStreamPlaying(bgm)) {
+            if (has_bgm && IsMusicStreamPlaying(bgm)) {
                 PauseMusicStream(bgm);
             }
 
             if (IsKeyPressed(KEY_ENTER)) {
                 game_init(&game);
-                StopMusicStream(bgm);
-                PlayMusicStream(bgm);
+                if (has_bgm) {
+                    StopMusicStream(bgm);
+                    PlayMusicStream(bgm);
+                }
             }
             else if (IsKeyPressed(KEY_N)) {
                 break;
             }
         }
         else {
-            UpdateMusicStream(bgm);
+            if (has_bgm) {
+                UpdateMusicStream(bgm);
+            }
 
             if (IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)) {
                 piece_move_left(&game.current);
@@ -75,7 +83,9 @@ int main(void) {
         render_draw(&game);
     }
 
-    UnloadMusicStream(bgm);
+    if (has_bgm) {
+        UnloadMusicStream(bgm);
+    }
     CloseAudioDevice();
     CloseWindow();
     return 0;
