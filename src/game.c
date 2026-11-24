@@ -24,6 +24,7 @@ const char *game_instructions[INSTRUCTIONS_COUNT] = {
     "Seta para cima: rotacionar a peça",
     "Seta para baixo: descer a peça mais rápido",
     "Para ganhar, complete as linhas para ganhar pontos",
+    "Fechar o jogo durante a partida salva seu progresso",
     "",
     "Partiu voltar no tempo e jogar um clássico revolucionário?",
     "",

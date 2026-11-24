@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 // Instrucoes mostradas no inicio do jogo (uma string por linha)
-#define INSTRUCTIONS_COUNT 22
+#define INSTRUCTIONS_COUNT 23
 extern const char *game_instructions[INSTRUCTIONS_COUNT];
 
 typedef enum {
