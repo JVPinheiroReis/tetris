@@ -7,32 +7,26 @@ void board_init(Board *board) {
     memset(board->cells, PIECE_NONE, sizeof(board->cells));
 }
 
-int board_is_free(const Board *board, int row, int col) {
+bool board_is_free(const Board *board, int row, int col) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLUMNS) {
-        return 0;
+        return false;
     }
 
-    if (board->cells[row][col] == PIECE_NONE) {
-        return 1;
-    }
-
-    else {
-        return 0;
-    }
+    return board->cells[row][col] == PIECE_NONE;
 }
 
-int board_collision(const Board *board, const Piece *p) {
+bool board_collision(const Board *board, const Piece *p) {
     int r, c;
     for (r = 0; r < PIECE_SIZE; r++) {
         for (c = 0; c < PIECE_SIZE; c++) {
             if (!PIECE_SHAPES[p->type][p->rotation][r][c]) continue;
 
             if (!board_is_free(board, p->y + r, p->x + c)) {
-                return 1;
+                return true;
             }
         }
     }
-    return 0;
+    return false;
 }
 
 void board_fix_piece(Board *board, const Piece *p) {
