@@ -27,7 +27,7 @@ typedef struct {
 } Game;
 
 void game_init(Game *game);
-void game_update(Game *game, float dt);
+int game_update(Game *game, float dt);
 bool game_try_move(Game *game, int dx, int dy);
 bool game_try_rotate(Game *game);
 void game_soft_drop(Game *game);

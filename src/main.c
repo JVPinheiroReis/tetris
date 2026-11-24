@@ -19,6 +19,12 @@ int main(void) {
         PlayMusicStream(bgm);
     }
 
+    Sound sfx_clear_row = LoadSound(SFX_CLEAR_ROW_PATH);
+    bool has_sfx_clear_row = IsSoundValid(sfx_clear_row);
+    if (has_sfx_clear_row) {
+        SetSoundVolume(sfx_clear_row, SFX_CLEAR_ROW_VOLUME);
+    }
+
     SetTargetFPS(TARGET_FPS);
 
     Game game;
@@ -69,10 +75,16 @@ int main(void) {
             }
         }
 
-        game_update(&game, GetFrameTime());
+        int cleared = game_update(&game, GetFrameTime());
+        if (cleared > 0 && has_sfx_clear_row) {
+            PlaySound(sfx_clear_row);
+        }
         render_draw(&game);
     }
 
+    if (has_sfx_clear_row) {
+        UnloadSound(sfx_clear_row);
+    }
     if (has_bgm) {
         UnloadMusicStream(bgm);
     }

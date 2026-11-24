@@ -16,6 +16,8 @@
 // Audio
 #define BGM_PATH "resources/theme.mp3"
 #define BGM_VOLUME 0.3f
+#define SFX_CLEAR_ROW_PATH "resources/clear_row.wav"
+#define SFX_CLEAR_ROW_VOLUME 0.5f
 
 // Tempos (em segundos)
 #define DROP_INTERVAL 0.5f

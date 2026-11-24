@@ -69,20 +69,20 @@ void game_soft_drop(Game *game) {
     }
 }
 
-void game_update(Game *game, float dt) {
+int game_update(Game *game, float dt) {
     if (dt > MAX_DELTA_TIME) {
         dt = MAX_DELTA_TIME;
     }
 
     if (game->state == STATE_INTRO) {
-        return;
+        return 0;
     }
 
     if (game->state == STATE_GAME_OVER) {
         if (game->game_over_timer < GAME_OVER_DURATION) {
             game->game_over_timer += dt;
         }
-        return;
+        return 0;
     }
 
     game->elapsed += dt;
@@ -94,6 +94,8 @@ void game_update(Game *game, float dt) {
         game->score += POINTS_TIME_TICK;
     }
 
+    int cleared = 0;
+
     if (game->drop_timer >= DROP_INTERVAL) {
         game->drop_timer -= DROP_INTERVAL;
 
@@ -101,7 +103,7 @@ void game_update(Game *game, float dt) {
             board_fix_piece(&game->board, &game->current);
             game->score += POINTS_PIECE_LOCKED;
 
-            int cleared = board_clear_rows(&game->board);
+            cleared = board_clear_rows(&game->board);
             if (cleared > 0) {
                 game->score += cleared * POINTS_LINE_CLEARED;
             }
@@ -113,4 +115,6 @@ void game_update(Game *game, float dt) {
             }
         }
     }
+
+    return cleared;
 }
