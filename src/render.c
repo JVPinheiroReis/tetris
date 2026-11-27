@@ -4,6 +4,9 @@
 #include "game.h"
 #include "piece.h"
 #include "raylib.h"
+#include <stddef.h>
+
+static Font font;
 
 static const Color PIECE_COLORS[PIECE_COUNT] = {
     [PIECE_NONE] = BLACK,
@@ -98,31 +101,63 @@ static void render_current_piece_preview(const Board *board, const Piece *p) {
     render_piece(&pp, true);
 }
 
-static void render_centered_text(const char *text, int y, int font_size,
+static void render_text(const char *text, int x, int y, int size, Color color) {
+    DrawTextEx(font, text, (Vector2){x, y}, size, FONT_SPACING, color);
+}
+
+static void render_centered_text(const char *text, int y, int size,
                                  Color color) {
-    int x = (WINDOW_WIDTH - MeasureText(text, font_size)) / 2;
-    DrawText(text, x, y, font_size, color);
+    int w = MeasureTextEx(font, text, size, FONT_SPACING).x;
+    render_text(text, (WINDOW_WIDTH - w) / 2, y, size, color);
 }
 
 static void render_instructions(void) {
-    render_centered_text(game_instructions[0], 30, 40, YELLOW);
+    render_centered_text("TETRIS 2.0", 36, FONT_SIZE_LARGE, YELLOW);
+    DrawLine(40, 112, WINDOW_WIDTH - 40, 112, DARKGRAY);
 
-    int i;
-    int y = 90;
-    for (i = 1; i < INSTRUCTIONS_COUNT; i++) {
-        if (game_instructions[i][0] == '\0') {
-            y += 12;
-            continue;
-        }
+    render_centered_text(
+        "Alguém um dia falou que um", 140, FONT_SIZE_SMALL, WHITE);
+    render_centered_text(
+        "verdadeiro clássico nunca morre.", 170, FONT_SIZE_SMALL, WHITE);
 
-        if (i == INSTRUCTIONS_COUNT - 1) {
-            render_centered_text(game_instructions[i], y + 10, 22, YELLOW);
-        }
-        else {
-            render_centered_text(game_instructions[i], y, 12, WHITE);
-            y += 20;
-        }
-    }
+    render_centered_text("Quem falou? Nem ideia.", 220, FONT_SIZE_SMALL, WHITE);
+
+    render_centered_text(
+        "E se ninguém falou, deveria,", 270, FONT_SIZE_SMALL, WHITE);
+    render_centered_text(
+        "porque o Tetris é um exemplo disso.", 300, FONT_SIZE_SMALL, WHITE);
+
+    render_centered_text(
+        "Refizemos aquele tradicional dos", 350, FONT_SIZE_SMALL, WHITE);
+    render_centered_text(
+        "anos 80, mas quem sabe, até melhor.", 380, FONT_SIZE_SMALL, WHITE);
+
+    render_centered_text("Para jogar é fácil:", 440, FONT_SIZE_MEDIUM, SKYBLUE);
+    render_centered_text(
+        "Esquerda / Direita: mover a peça", 480, FONT_SIZE_SMALL, LIGHTGRAY);
+    render_centered_text(
+        "Cima: rotacionar a peça", 510, FONT_SIZE_SMALL, LIGHTGRAY);
+    render_centered_text(
+        "Baixo: descer mais rápido", 540, FONT_SIZE_SMALL, LIGHTGRAY);
+    render_centered_text(
+        "Complete linhas para pontuar", 570, FONT_SIZE_SMALL, LIGHTGRAY);
+    render_centered_text(
+        "Fechar o jogo salva seu progresso", 600, FONT_SIZE_SMALL, LIGHTGRAY);
+
+    render_centered_text(
+        "Partiu voltar no tempo e jogar", 660, FONT_SIZE_SMALL, WHITE);
+    render_centered_text(
+        "um clássico revolucionário?", 690, FONT_SIZE_SMALL, WHITE);
+
+    DrawLine(40,
+             WINDOW_HEIGHT - 96,
+             WINDOW_WIDTH - 40,
+             WINDOW_HEIGHT - 96,
+             DARKGRAY);
+    render_centered_text("Aperte ENTER e bom jogo...",
+                         WINDOW_HEIGHT - 74,
+                         FONT_SIZE_MEDIUM,
+                         YELLOW);
 }
 
 static void render_draw_skull_transition(const Board *board, int rows) {
@@ -154,14 +189,28 @@ static void render_game_over(const Game *game) {
         return;
     }
 
-    render_centered_text("Game", 50, 80, RED);
-    render_centered_text("Over", 140, 80, RED);
-    render_centered_text(TextFormat("Score: %d", game->score), 260, 30, YELLOW);
+    render_centered_text("Game", 50, FONT_SIZE_LARGE, RED);
+    render_centered_text("Over", 130, FONT_SIZE_LARGE, RED);
     render_centered_text(
-        TextFormat("Time: %d", (int)game->elapsed), 300, 30, YELLOW);
+        TextFormat("Score: %d", game->score), 260, FONT_SIZE_MEDIUM, YELLOW);
+    render_centered_text(TextFormat("Time: %d", (int)game->elapsed),
+                         300,
+                         FONT_SIZE_MEDIUM,
+                         YELLOW);
 
-    render_centered_text("Continuar?", 340, 30, WHITE);
-    render_centered_text("[ENTER] Sim   [N] Nao", 380, 24, LIGHTGRAY);
+    render_centered_text("Continuar?", 360, FONT_SIZE_MEDIUM, WHITE);
+    render_centered_text(
+        "[ENTER] Sim   [N] Nao", 400, FONT_SIZE_MEDIUM, LIGHTGRAY);
+}
+
+void render_init(void) {
+    font = LoadFontEx(FONT_PATH, FONT_SIZE_LARGE, NULL, 224);
+    if (!IsFontValid(font)) font = GetFontDefault();
+    SetTextureFilter(font.texture, TEXTURE_FILTER_BILINEAR);
+}
+
+void render_shutdown(void) {
+    UnloadFont(font);
 }
 
 void render_draw(const Game *game) {
@@ -179,9 +228,16 @@ void render_draw(const Game *game) {
         render_current_piece_preview(&game->board, &game->current);
         render_piece(&game->current, false);
 
-        DrawText(TextFormat("Score: %d", game->score), 10, 10, 20, YELLOW);
-        DrawText(
-            TextFormat("Time: %d", (int)game->elapsed), 10, 30, 20, YELLOW);
+        render_text(TextFormat("Score: %d", game->score),
+                    10,
+                    10,
+                    FONT_SIZE_SMALL,
+                    YELLOW);
+        render_text(TextFormat("Time: %d", (int)game->elapsed),
+                    10,
+                    35,
+                    FONT_SIZE_SMALL,
+                    YELLOW);
     }
 
     EndDrawing();

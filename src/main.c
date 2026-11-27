@@ -10,6 +10,7 @@ int main(void) {
     srand((unsigned int)time(NULL));
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+    render_init();
     InitAudioDevice();
 
     Music bgm = LoadMusicStream(BGM_PATH);
@@ -109,6 +110,7 @@ int main(void) {
     if (has_bgm) UnloadMusicStream(bgm);
 
     CloseAudioDevice();
+    render_shutdown();
     CloseWindow();
     return 0;
 }

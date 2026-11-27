@@ -5,7 +5,7 @@
 #define WINDOW_TITLE "Tetris"
 #define TARGET_FPS 60
 
-#define CELL 30
+#define CELL 45
 #define COLUMNS 15
 #define ROWS 20
 #define WINDOW_WIDTH (COLUMNS * CELL)
@@ -20,6 +20,13 @@
 #define GAME_OVER_BGM_VOLUME 0.3f
 #define SFX_CLEAR_ROW_PATH "resources/clear_row.wav"
 #define SFX_CLEAR_ROW_VOLUME 0.5f
+
+// Fonte
+#define FONT_PATH "resources/silkscreen.ttf"
+#define FONT_SPACING 1.0f
+#define FONT_SIZE_LARGE 64
+#define FONT_SIZE_MEDIUM 35
+#define FONT_SIZE_SMALL 30
 
 // Tempos (em segundos)
 #define DROP_INTERVAL 0.5f

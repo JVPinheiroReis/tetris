@@ -5,31 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char *game_instructions[INSTRUCTIONS_COUNT] = {
-    "TETRIS 2.0",
-    "",
-    "",
-    "Alguém um dia falou que um verdadeiro clássico nunca morre.",
-    "",
-    "",
-    "Quem falou? Nem ideia.",
-    "",
-    "E se ninguém falou, deveria, porque o Tetris é um exemplo disso.",
-    "",
-    "",
-    "Refizemos aquele tradicional dos anos 80, mas quem sabe, até melhor",
-    "",
-    "Para jogar é fácil:",
-    "Seta para a esquerda / direita: mover a peça",
-    "Seta para cima: rotacionar a peça",
-    "Seta para baixo: descer a peça mais rápido",
-    "Para ganhar, complete as linhas para ganhar pontos",
-    "Fechar o jogo durante a partida salva seu progresso",
-    "",
-    "Partiu voltar no tempo e jogar um clássico revolucionário?",
-    "",
-    "Aperte ENTER e bom jogo..."};
-
 static Piece game_spawn_piece(void) {
     Piece p = {
         .type = (PieceType)(1 + rand() % (PIECE_COUNT - 1)),
